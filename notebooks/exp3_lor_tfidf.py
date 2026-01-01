@@ -114,7 +114,7 @@ def train_and_log_model(X_train, X_test, y_train, y_test, vectorizer):
 
         mlflow.log_params(best_params)
         mlflow.log_metric("best_f1_score", best_f1)
-        mlflow.sklearn.log_model(best_model, "model")
+        mlflow.sklearn.log_model(best_model, name="model")
         
         print(f"\nBest Params: {best_params} | Best F1 Score: {best_f1:.4f}")
 
