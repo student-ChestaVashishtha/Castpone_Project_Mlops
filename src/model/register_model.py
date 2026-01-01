@@ -9,16 +9,18 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
 
-dagshub_token=os.getenv("CASTPONE_TEST")
+dagshub_token = os.getenv("CAPSTONE_TEST")
 if not dagshub_token:
-    raise EnvironmentError("CASTPONE_TEST is not set")
-os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
-os.environ["MLFLOW_TRACLING_PASSWORD"]=dagshub_token
+    raise EnvironmentError("CAPSTONE_TEST environment variable is not set")
 
-dagshub_url="https://dagshub.com"
-repo_owner="student-ChestaVashishtha",
-repo_name="Castpone_Project_Mlops"
+os.environ["MLFLOW_TRACKING_USERNAME"] = dagshub_token
+os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
 
+dagshub_url = "https://dagshub.com"
+repo_owner = "student-ChestaVashishtha"
+repo_name = "Castpone_Project_Mlops"
+
+# Set up MLflow tracking URI
 mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 # Below code block is for local use
