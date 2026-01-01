@@ -9,22 +9,22 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 warnings.filterwarnings("ignore")
 
-# dagshub_token=os.getenv("CASTPONE_TEST")
-# if not dagshub_token:
-#     raise EnvironmentError("CASTPONE_TEST is not set")
-# os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
-# os.environ["MLFLOW_TRACLING_PASSWORD"]=dagshub_token
+dagshub_token=os.getenv("CASTPONE_TEST")
+if not dagshub_token:
+    raise EnvironmentError("CASTPONE_TEST is not set")
+os.environ["MLFLOW_TRACKING_USERNAME"]=dagshub_token
+os.environ["MLFLOW_TRACLING_PASSWORD"]=dagshub_token
 
-# dagshub_url="https://dagshub.com"
-# repo_owner="Student-ChestaVashishtha",
-# repo_name="Castpone_Project_Mlops"
+dagshub_url="https://dagshub.com"
+repo_owner="student-ChestaVashishtha",
+repo_name="Castpone_Project_Mlops"
 
-# mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
+mlflow.set_tracking_uri(f'{dagshub_url}/{repo_owner}/{repo_name}.mlflow')
 
 # Below code block is for local use
 # -------------------------------------------------------------------------------------
-mlflow.set_tracking_uri('https://dagshub.com/student-ChestaVashishtha/Castpone_Project_Mlops.mlflow')
-dagshub.init(repo_owner="Student-ChestaVashishtha", repo_name="Castpone_Project_Mlops", mlflow=True)
+# mlflow.set_tracking_uri('https://dagshub.com/student-ChestaVashishtha/Castpone_Project_Mlops.mlflow')
+# dagshub.init(repo_owner="Student-ChestaVashishtha", repo_name="Castpone_Project_Mlops", mlflow=True)
 # -------------------------------------------------------------------------------------
 
 def load_model_info(file_path: str) -> dict:
