@@ -325,23 +325,94 @@ eksctl delete cluster --name flask-app-cluster --region us-east-1
 
 ---
 
-## 🏗 CloudFormation & EKS
+Yes — **you absolutely SHOULD add a “Challenges & Learnings” section**.
+This is actually a **big plus** for reviewers, interviewers, and recruiters because it shows **real-world debugging experience**, not just a happy-path tutorial.
 
-* `eksctl` creates CloudFormation stacks internally
-* Manages EKS control plane & node groups
-* Resources are grouped as **Stacks**
+Below is a **copy-paste ready Markdown section** you can directly add to your README.
 
 ---
 
-## 📌 Key Concepts
+## 🚧 Challenges Faced & Key Learnings
 
-### Fleet Requests
+### 1️⃣ EKS Cluster Deployment Failure (IAM Permissions)
 
-Used by EKS Auto Scaling Groups to provision EC2 nodes. AWS has quotas that may block node creation.
+**Challenge:**
+While creating the EKS cluster using `eksctl`, node group creation failed due to **missing IAM permissions**, specifically related to EC2 Fleet Requests and ECR access.
 
-### PVC (PersistentVolumeClaim)
+**Root Cause:**
+The IAM user lacked required policies such as:
 
-Kubernetes storage abstraction used to request persistent storage dynamically.
+* `AmazonEKSClusterPolicy`
+* `AmazonEKSWorkerNodePolicy`
+* `AmazonEC2ContainerRegistryFullAccess`
+
+**Solution:**
+
+* Attached the missing IAM policies to the user/role
+* Verified permissions using AWS IAM console
+* Recreated the cluster successfully after fixing access issues
+
+**Learning:**
+EKS heavily relies on IAM roles and CloudFormation stacks. Even a single missing permission can silently block cluster provisioning.
+
+---
+
+### 2️⃣ MLflow Model Logging Failure
+
+**Challenge:**
+MLflow experiments were tracked successfully, but **model logging failed**, especially when running inside notebooks and Docker containers.
+
+**Root Cause:**
+
+* Incorrect MLflow tracking URI
+* Missing DAGsHub authentication token in environment variables
+* Model logging attempted without proper artifact storage configuration
+
+**Solution:**
+
+* Explicitly set the MLflow tracking URI and credentials
+* Passed DAGsHub token as an environment variable (`CAPSTONE_TEST`)
+* Switched MLflow configuration to parameter-based setup for Docker compatibility
+
+**Learning:**
+MLflow requires consistent tracking configuration across local, CI, and containerized environments to log artifacts reliably.
+
+---
+
+### 3️⃣ Docker Container Failure Due to Dependency Version Mismatch
+
+**Challenge:**
+The Flask application container failed at runtime due to **Python package version mismatches** between the local development environment and the Docker image.
+
+**Root Cause:**
+
+* Dependencies were installed manually during development
+* Docker image used a different base Python version
+* Inconsistent versions of ML libraries (e.g., `mlflow`, `scikit-learn`, `pandas`) caused import and runtime errors
+
+**Solution:**
+
+* Generated dependencies directly from the application code using `pipreqs`
+* Ensured consistent Python version across local, CI, and Docker environments
+* Rebuilt the Docker image with aligned dependency versions
+
+**Learning:**
+Dependency mismatches are a common failure point in containerized ML systems; reproducible builds require strict version alignment across environments.
+
+---
+
+### 4️⃣ CI/CD Failures Due to Missing Secrets
+
+**Challenge:**
+GitHub Actions pipeline failed during Docker build and ECR push stages.
+
+**Solution:**
+
+* Added AWS credentials and DAGsHub token to GitHub Secrets
+* Verified environment variables inside CI logs
+
+**Learning:**
+CI/CD pipelines are highly sensitive to missing secrets; validating secrets early avoids long debug cycles.
 
 ---
 
@@ -353,13 +424,4 @@ Kubernetes storage abstraction used to request persistent storage dynamically.
 ✔ Scalable Kubernetes deployment
 ✔ Real-time monitoring
 
----
 
-If you want, I can also:
-
-* **Shorten this for resume**
-* **Add architecture diagram**
-* **Create a project explanation for interviews**
-* **Split README into beginner & advanced sections**
-
-Just tell me 👍
