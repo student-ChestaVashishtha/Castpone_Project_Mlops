@@ -323,14 +323,9 @@ eksctl delete cluster --name flask-app-cluster --region us-east-1
 * Delete ECR repo
 * Verify CloudFormation stack deletion
 
+### I deleted my deployed link because of aws charges but this is video proof of it : https://drive.google.com/file/d/1PGAkGSD6g0u0IVQTug4UULZ54e2bISRP/view?usp=sharing
 ---
 
-Yes — **you absolutely SHOULD add a “Challenges & Learnings” section**.
-This is actually a **big plus** for reviewers, interviewers, and recruiters because it shows **real-world debugging experience**, not just a happy-path tutorial.
-
-Below is a **copy-paste ready Markdown section** you can directly add to your README.
-
----
 
 ## 🚧 Challenges Faced & Key Learnings
 
